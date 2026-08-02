@@ -3,32 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-
   <title>Calculadora de Cabos & Disjuntores | NBR 5410</title>
-
-  <link rel="icon" type="image/jpeg" href="https://i.postimg.cc/QtQbM8sN/Screenshot-20260802-000723-Chrome(1).jpg">
-
-  <meta name="description" content="Calculadora de Cabos e Disjuntores baseada na NBR 5410. Dimensione cabos elétricos e proteção de circuitos de forma rápida e precisa.">
-
-  <meta property="og:title" content="Calculadora de Cabos & Disjuntores | NBR 5410">
-  <meta property="og:description" content="Calcule cabos e disjuntores conforme a NBR 5410 de forma rápida e precisa.">
-  <meta property="og:image" content="https://i.postimg.cc/xCvRdfYT/Screenshot-20260802-000723-Chrome.jpg">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://powerlab-nat.vercel.app">
-  <meta property="og:site_name" content="PowerLab">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Calculadora de Cabos & Disjuntores | NBR 5410">
-  <meta name="twitter:description" content="Dimensionamento elétrico de cabos e disjuntores conforme a NBR 5410.">
-  <meta name="twitter:image" content="https://i.postimg.cc/xCvRdfYT/Screenshot-20260802-000723-Chrome.jpg">
-
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
   <style>
     #loading-overlay {
       position: fixed;
-      top: 0,
+      top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
@@ -89,7 +70,6 @@
     }
   </style>
 </head>
-
 <body>
   <div id="loading-overlay">
     <canvas id="loading-canvas"></canvas>
@@ -99,7 +79,7 @@
   <div id="main-wrapper">
     <header class="navbar" id="navbar">
       <div class="container nav-container">
-        <a href="#hero" class="logo"><i class="fas fa-bolt"></i> PowerLab</a>
+        <a href="#hero" class="logo"><i class="fas fa-bolt"></i> EletroCalc</a>
         <nav>
           <ul class="nav-links" id="nav-links">
             <li><a href="#hero" class="active">Início</a></li>
@@ -175,12 +155,22 @@
               </div>
               <div class="form-row">
                 <div class="form-group">
+                  <label for="circuitType">Tipo de Circuito</label>
+                  <select id="circuitType">
+                    <option value="lighting">Iluminação</option>
+                    <option value="tug" selected>Tomadas de Uso Geral (TUG)</option>
+                    <option value="tue">Circuito Dedicado (TUE)</option>
+                  </select>
+                </div>
+                <div class="form-group">
                   <label for="material">Material do Condutor</label>
                   <select id="material">
                     <option value="copper" selected>Cobre</option>
                     <option value="aluminum">Alumínio</option>
                   </select>
                 </div>
+              </div>
+              <div class="form-row">
                 <div class="form-group">
                   <label for="installMethod">Método de Instalação</label>
                   <select id="installMethod">
@@ -190,16 +180,17 @@
                     <option value="D">D - Eletroduto enterrado</option>
                   </select>
                 </div>
-              </div>
-              <div class="form-row">
                 <div class="form-group">
                   <label for="temperature">Temperatura Ambiente (°C)</label>
                   <input type="number" id="temperature" value="30" min="10" max="80" step="any">
                 </div>
+              </div>
+              <div class="form-row">
                 <div class="form-group">
                   <label for="maxDrop">Queda de Tensão Máx. (%)</label>
                   <input type="number" id="maxDrop" value="4" min="0.5" max="15" step="0.1">
                 </div>
+                <div class="form-group"></div>
               </div>
               <button type="submit" class="btn-calculate"><i class="fas fa-calculator"></i> Calcular Agora</button>
             </form>
@@ -304,7 +295,9 @@
               <li><i class="fas fa-check-circle"></i> Aplica fatores de correção por temperatura e agrupamento.</li>
               <li><i class="fas fa-check-circle"></i> Aumenta automaticamente a seção para atender queda de tensão.</li>
               <li><i class="fas fa-check-circle"></i> O disjuntor nunca ultrapassa a capacidade do cabo.</li>
+              <li><i class="fas fa-check-circle"></i> Mínimo 2.5 mm² para TUG conforme NBR 5410.</li>
             </ul>
+            <p>Versão 1.1 · Engenharia Elétrica</p>
           </div>
         </div>
       </section>
@@ -312,13 +305,8 @@
 
     <footer class="footer">
       <div class="container footer-content">
-        <p>&copy; 2025 PowerLab · Todos os direitos reservados.</p>
+        <p>&copy; 2025 EletroCalc · Todos os direitos reservados.</p>
         <p>Consulte sempre um profissional habilitado.</p>
-        <p>
-          <a href="https://github.com/Y2kNat" style="color: #ffffff; text-decoration: none;">
-            - Isac Ornelas
-          </a>
-        </p>
       </div>
     </footer>
   </div>
@@ -580,11 +568,12 @@
       var powerInput = document.getElementById('power');
       var lengthInput = document.getElementById('length');
       var phasesSelect = document.getElementById('phases');
+      var circuitTypeSelect = document.getElementById('circuitType');
       var materialSelect = document.getElementById('material');
       var installMethodSelect = document.getElementById('installMethod');
       var temperatureInput = document.getElementById('temperature');
       var maxDropInput = document.getElementById('maxDrop');
-      var allInputs = [voltageInput, powerInput, lengthInput, phasesSelect, materialSelect, installMethodSelect, temperatureInput, maxDropInput];
+      var allInputs = [voltageInput, powerInput, lengthInput, phasesSelect, circuitTypeSelect, materialSelect, installMethodSelect, temperatureInput, maxDropInput];
       var cableSizes = [1.5, 2.5, 4, 6, 10, 16, 25, 35];
       var copperAmpacity = { 1.5: 17.5, 2.5: 24, 4: 32, 6: 41, 10: 57, 16: 76, 25: 101, 35: 125 };
       var aluminumAmpacity = { 10: 44, 16: 59, 25: 78, 35: 96 };
@@ -611,6 +600,12 @@
         return mat === 'copper' ? (copperAmpacity[size] || 0) : (aluminumAmpacity[size] || 0);
       }
 
+      function getMinCableSize(circuitType) {
+        if (circuitType === 'tug') return 2.5;
+        if (circuitType === 'lighting') return 1.5;
+        return 0;
+      }
+
       function calculateVoltageDrop(current, length, material, size, voltage, phases) {
         var rho = material === 'copper' ? copperResistivity : aluminumResistivity;
         var lf = (phases === 1 || phases === 2) ? 2 : Math.sqrt(3);
@@ -623,6 +618,7 @@
         var P = parseFloat(powerInput.value);
         var L = parseFloat(lengthInput.value);
         var ph = parseInt(phasesSelect.value);
+        var circuitType = circuitTypeSelect.value;
         var mat = materialSelect.value;
         var method = installMethodSelect.value;
         var Ta = parseFloat(temperatureInput.value);
@@ -644,6 +640,7 @@
         var ftotal = ft * fg;
         var selSize = null;
         var baseAmp = 0;
+        var minSize = getMinCableSize(circuitType);
 
         for (var i = 0; i < cableSizes.length; i++) {
           var s = cableSizes[i];
@@ -661,17 +658,28 @@
           baseAmp = getBaseAmpacity(mat, 35);
         }
 
+        if (minSize > 0 && selSize < minSize) {
+          for (var j = 0; j < cableSizes.length; j++) {
+            var candidateSize = cableSizes[j];
+            if (candidateSize >= minSize && getBaseAmpacity(mat, candidateSize) > 0) {
+              selSize = candidateSize;
+              baseAmp = getBaseAmpacity(mat, candidateSize);
+              break;
+            }
+          }
+        }
+
         var finalSize = selSize;
         var finalBase = baseAmp;
 
-        for (var j = 0; j < cableSizes.length; j++) {
+        for (var k = 0; k < cableSizes.length; k++) {
           var vd = calculateVoltageDrop(I, L, mat, finalSize, V, ph);
           if ((vd / V) * 100 <= maxDrop) break;
           var idx = cableSizes.indexOf(finalSize);
           var next = null;
-          for (var k = idx + 1; k < cableSizes.length; k++) {
-            if (getBaseAmpacity(mat, cableSizes[k]) > 0) {
-              next = cableSizes[k];
+          for (var m = idx + 1; m < cableSizes.length; m++) {
+            if (getBaseAmpacity(mat, cableSizes[m]) > 0) {
+              next = cableSizes[m];
               break;
             }
           }
@@ -685,9 +693,9 @@
         var correctedAmp = finalBase * ftotal;
         var breaker = null;
 
-        for (var m = standardBreakers.length - 1; m >= 0; m--) {
-          if (standardBreakers[m] <= correctedAmp) {
-            breaker = standardBreakers[m];
+        for (var n = standardBreakers.length - 1; n >= 0; n--) {
+          if (standardBreakers[n] <= correctedAmp) {
+            breaker = standardBreakers[n];
             break;
           }
         }
@@ -696,8 +704,13 @@
 
         var safe = (dropPct <= maxDrop && breaker <= correctedAmp && I <= correctedAmp) ? 'Seguro' : 'Verificar';
 
+        var circuitTypeLabel = '';
+        if (circuitType === 'tug') circuitTypeLabel = 'TUG';
+        else if (circuitType === 'lighting') circuitTypeLabel = 'Iluminação';
+        else circuitTypeLabel = 'TUE';
+
         document.getElementById('res-current').textContent = I.toFixed(2) + ' A';
-        document.getElementById('res-cable').textContent = finalSize + ' mm² (' + (mat === 'copper' ? 'Cobre' : 'Alumínio') + ')';
+        document.getElementById('res-cable').textContent = finalSize + ' mm² (' + (mat === 'copper' ? 'Cobre' : 'Alumínio') + ') [' + circuitTypeLabel + ']';
         document.getElementById('res-breaker').textContent = breaker + ' A';
         document.getElementById('res-ampacity').textContent = correctedAmp.toFixed(2) + ' A';
         document.getElementById('res-drop-v').textContent = vDrop.toFixed(2) + ' V';
@@ -759,6 +772,7 @@
         powerInput.value = 4500;
         lengthInput.value = 35;
         phasesSelect.value = '1';
+        circuitTypeSelect.value = 'tug';
         materialSelect.value = 'copper';
         installMethodSelect.value = 'B1';
         temperatureInput.value = 30;
