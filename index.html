@@ -159,7 +159,7 @@
                   <select id="circuitType">
                     <option value="lighting">Iluminação</option>
                     <option value="tug" selected>Tomadas de Uso Geral (TUG)</option>
-                    <option value="tue">Circuito Dedicado (TUE)</option>
+                    <option value="tue">Tomadas de Uso Específico (TUE)</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -295,9 +295,9 @@
               <li><i class="fas fa-check-circle"></i> Aplica fatores de correção por temperatura e agrupamento.</li>
               <li><i class="fas fa-check-circle"></i> Aumenta automaticamente a seção para atender queda de tensão.</li>
               <li><i class="fas fa-check-circle"></i> O disjuntor nunca ultrapassa a capacidade do cabo.</li>
-              <li><i class="fas fa-check-circle"></i> Mínimo 2.5 mm² para TUG conforme NBR 5410.</li>
+              <li><i class="fas fa-check-circle"></i> Mínimo 2.5 mm² para TUG e 4 mm² para TUE conforme NBR 5410.</li>
             </ul>
-            <p>Versão 1.1 · Engenharia Elétrica</p>
+            <p>Versão 1.2 · Engenharia Elétrica</p>
           </div>
         </div>
       </section>
@@ -601,6 +601,7 @@
       }
 
       function getMinCableSize(circuitType) {
+        if (circuitType === 'tue') return 4;
         if (circuitType === 'tug') return 2.5;
         if (circuitType === 'lighting') return 1.5;
         return 0;
@@ -610,6 +611,19 @@
         var rho = material === 'copper' ? copperResistivity : aluminumResistivity;
         var lf = (phases === 1 || phases === 2) ? 2 : Math.sqrt(3);
         return current * (rho * length * lf) / size;
+      }
+
+      function hideResults() {
+        resultContainer.style.display = 'none';
+        document.getElementById('res-current').textContent = '0';
+        document.getElementById('res-cable').textContent = '--';
+        document.getElementById('res-breaker').textContent = '--';
+        document.getElementById('res-ampacity').textContent = '0';
+        document.getElementById('res-drop-v').textContent = '0';
+        document.getElementById('res-drop-pct').textContent = '0';
+        document.getElementById('res-factors').textContent = '--';
+        document.getElementById('res-status').textContent = '--';
+        document.getElementById('safety-message').innerHTML = '';
       }
 
       function performCalculation(e) {
@@ -625,13 +639,13 @@
         var maxDrop = parseFloat(maxDropInput.value);
 
         if (isNaN(V) || V <= 0 || isNaN(P) || P <= 0 || isNaN(L) || L <= 0) {
-          resultContainer.style.display = 'none';
+          hideResults();
           return;
         }
 
         var I = (ph === 1 || ph === 2) ? P / V : P / (Math.sqrt(3) * V);
         if (I <= 0) {
-          resultContainer.style.display = 'none';
+          hideResults();
           return;
         }
 
@@ -705,9 +719,9 @@
         var safe = (dropPct <= maxDrop && breaker <= correctedAmp && I <= correctedAmp) ? 'Seguro' : 'Verificar';
 
         var circuitTypeLabel = '';
-        if (circuitType === 'tug') circuitTypeLabel = 'TUG';
-        else if (circuitType === 'lighting') circuitTypeLabel = 'Iluminação';
-        else circuitTypeLabel = 'TUE';
+        if (circuitType === 'tue') circuitTypeLabel = 'TUE';
+        else if (circuitType === 'tug') circuitTypeLabel = 'TUG';
+        else circuitTypeLabel = 'Iluminação';
 
         document.getElementById('res-current').textContent = I.toFixed(2) + ' A';
         document.getElementById('res-cable').textContent = finalSize + ' mm² (' + (mat === 'copper' ? 'Cobre' : 'Alumínio') + ') [' + circuitTypeLabel + ']';
@@ -731,6 +745,8 @@
         }
 
         resultContainer.style.display = 'block';
+
+        resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
 
       menuToggle.addEventListener('click', function() {
@@ -761,8 +777,12 @@
       });
 
       allInputs.forEach(function(inp) {
-        inp.addEventListener('input', performCalculation);
-        inp.addEventListener('change', performCalculation);
+        inp.addEventListener('input', function() {
+          hideResults();
+        });
+        inp.addEventListener('change', function() {
+          hideResults();
+        });
       });
 
       form.addEventListener('submit', performCalculation);
@@ -777,16 +797,7 @@
         installMethodSelect.value = 'B1';
         temperatureInput.value = 30;
         maxDropInput.value = 4;
-        resultContainer.style.display = 'none';
-        document.getElementById('res-current').textContent = '0';
-        document.getElementById('res-cable').textContent = '--';
-        document.getElementById('res-breaker').textContent = '--';
-        document.getElementById('res-ampacity').textContent = '0';
-        document.getElementById('res-drop-v').textContent = '0';
-        document.getElementById('res-drop-pct').textContent = '0';
-        document.getElementById('res-factors').textContent = '--';
-        document.getElementById('res-status').textContent = '--';
-        document.getElementById('safety-message').innerHTML = '';
+        hideResults();
       }
 
       resetState();
