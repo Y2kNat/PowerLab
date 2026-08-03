@@ -1,0 +1,64 @@
+{
+  "sizing_table": {
+    "description": "Seção mínima do condutor de proteção (PE) conforme NBR 5410 Tabela 58",
+    "rules": [
+      {
+        "phase_conductor_S_mm2": "S ≤ 16",
+        "PE_conductor_mm2": "S",
+        "description": "PE igual à seção do condutor fase"
+      },
+      {
+        "phase_conductor_S_mm2": "16 < S ≤ 35",
+        "PE_conductor_mm2": 16,
+        "description": "PE fixo em 16 mm²"
+      },
+      {
+        "phase_conductor_S_mm2": "S > 35",
+        "PE_conductor_mm2": "S / 2",
+        "description": "PE igual à metade da seção do condutor fase"
+      }
+    ],
+    "common_values": [
+      { "phase_mm2": 1.5, "PE_mm2": 1.5 },
+      { "phase_mm2": 2.5, "PE_mm2": 2.5 },
+      { "phase_mm2": 4, "PE_mm2": 4 },
+      { "phase_mm2": 6, "PE_mm2": 6 },
+      { "phase_mm2": 10, "PE_mm2": 10 },
+      { "phase_mm2": 16, "PE_mm2": 16 },
+      { "phase_mm2": 25, "PE_mm2": 16 },
+      { "phase_mm2": 35, "PE_mm2": 16 },
+      { "phase_mm2": 50, "PE_mm2": 25 },
+      { "phase_mm2": 70, "PE_mm2": 35 },
+      { "phase_mm2": 95, "PE_mm2": 50 },
+      { "phase_mm2": 120, "PE_mm2": 70 },
+      { "phase_mm2": 150, "PE_mm2": 70 },
+      { "phase_mm2": 185, "PE_mm2": 95 },
+      { "phase_mm2": 240, "PE_mm2": 120 },
+      { "phase_mm2": 300, "PE_mm2": 150 }
+    ]
+  },
+  "calculation_method": {
+    "adiabatic_equation": {
+      "formula": "S = √(I² × t) / k",
+      "parameters": {
+        "S": "Seção do condutor de proteção (mm²)",
+        "I": "Corrente de curto-circuito presumida (A)",
+        "t": "Tempo de atuação do dispositivo de proteção (s)",
+        "k": "Fator que depende do material do condutor e isolação"
+      },
+      "k_factors": {
+        "copper_PVC": 115,
+        "copper_EPR_XLPE": 143,
+        "aluminum_PVC": 76,
+        "aluminum_EPR_XLPE": 94,
+        "steel_PVC": 47
+      }
+    }
+  },
+  "additional_requirements": {
+    "minimum_section": "2.5 mm² se protegido contra corrosão e danos mecânicos",
+    "unprotected_minimum": "4 mm² para condutores sem proteção mecânica",
+    "equipotential_bonding": "Mínimo 6 mm² para condutores de equipotencialidade principais",
+    "supplementary_bonding": "Mínimo 2.5 mm² para condutores de equipotencialidade suplementares"
+  }
+}
