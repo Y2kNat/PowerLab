@@ -1,0 +1,170 @@
+{
+  "residential": {
+    "led_lighting": {
+      "typical_power_range_W": { "min": 5, "max": 100 },
+      "typical_voltage_V": [127, 220],
+      "phases": 1,
+      "power_factor": 0.92,
+      "efficiency": 0.90,
+      "load_type": "resistive",
+      "description": "Iluminação LED residencial"
+    },
+    "shower": {
+      "typical_power_range_W": { "min": 3500, "max": 7500 },
+      "typical_voltage_V": [127, 220],
+      "phases": 1,
+      "power_factor": 1.00,
+      "efficiency": 1.00,
+      "load_type": "resistive",
+      "description": "Chuveiro elétrico"
+    },
+    "electric_oven": {
+      "typical_power_range_W": { "min": 2500, "max": 6000 },
+      "typical_voltage_V": [127, 220],
+      "phases": 1,
+      "power_factor": 1.00,
+      "efficiency": 0.95,
+      "load_type": "resistive",
+      "description": "Forno elétrico"
+    },
+    "microwave": {
+      "typical_power_range_W": { "min": 800, "max": 2000 },
+      "typical_voltage_V": [127, 220],
+      "phases": 1,
+      "power_factor": 0.90,
+      "efficiency": 0.85,
+      "load_type": "inductive",
+      "description": "Forno micro-ondas"
+    },
+    "refrigerator": {
+      "typical_power_range_W": { "min": 100, "max": 400 },
+      "typical_voltage_V": [127, 220],
+      "phases": 1,
+      "power_factor": 0.75,
+      "efficiency": 0.70,
+      "load_type": "inductive",
+      "description": "Geladeira"
+    },
+    "air_conditioner": {
+      "typical_power_range_W": { "min": 1200, "max": 3600 },
+      "typical_voltage_V": [220],
+      "phases": 1,
+      "power_factor": 0.85,
+      "efficiency": 0.80,
+      "load_type": "inductive",
+      "description": "Ar condicionado split"
+    },
+    "washing_machine": {
+      "typical_power_range_W": { "min": 500, "max": 1500 },
+      "typical_voltage_V": [127, 220],
+      "phases": 1,
+      "power_factor": 0.80,
+      "efficiency": 0.75,
+      "load_type": "inductive",
+      "description": "Máquina de lavar roupas"
+    },
+    "dryer": {
+      "typical_power_range_W": { "min": 1500, "max": 3500 },
+      "typical_voltage_V": [220],
+      "phases": 1,
+      "power_factor": 0.95,
+      "efficiency": 0.85,
+      "load_type": "resistive",
+      "description": "Secadora de roupas"
+    },
+    "water_heater": {
+      "typical_power_range_W": { "min": 2000, "max": 5000 },
+      "typical_voltage_V": [220],
+      "phases": 1,
+      "power_factor": 1.00,
+      "efficiency": 0.98,
+      "load_type": "resistive",
+      "description": "Aquecedor elétrico de água"
+    }
+  },
+  "commercial": {
+    "computer": {
+      "typical_power_range_W": { "min": 100, "max": 500 },
+      "typical_voltage_V": [127, 220],
+      "phases": 1,
+      "power_factor": 0.70,
+      "efficiency": 0.85,
+      "load_type": "electronic",
+      "description": "Computador desktop"
+    },
+    "printer": {
+      "typical_power_range_W": { "min": 200, "max": 1000 },
+      "typical_voltage_V": [127, 220],
+      "phases": 1,
+      "power_factor": 0.80,
+      "efficiency": 0.80,
+      "load_type": "electronic",
+      "description": "Impressora laser"
+    },
+    "server": {
+      "typical_power_range_W": { "min": 500, "max": 3000 },
+      "typical_voltage_V": [220],
+      "phases": 1,
+      "power_factor": 0.90,
+      "efficiency": 0.90,
+      "load_type": "electronic",
+      "description": "Servidor de rede"
+    },
+    "small_motor": {
+      "typical_power_range_W": { "min": 500, "max": 5000 },
+      "typical_voltage_V": [220, 380],
+      "phases": 1,
+      "power_factor": 0.80,
+      "efficiency": 0.85,
+      "load_type": "inductive",
+      "description": "Motor monofásico pequeno"
+    },
+    "three_phase_motor": {
+      "typical_power_range_W": { "min": 1000, "max": 15000 },
+      "typical_voltage_V": [220, 380],
+      "phases": 3,
+      "power_factor": 0.85,
+      "efficiency": 0.90,
+      "load_type": "inductive",
+      "description": "Motor trifásico"
+    }
+  },
+  "industrial": {
+    "industrial_motor_small": {
+      "typical_power_range_W": { "min": 5000, "max": 15000 },
+      "typical_voltage_V": [380],
+      "phases": 3,
+      "power_factor": 0.87,
+      "efficiency": 0.91,
+      "load_type": "inductive",
+      "description": "Motor industrial pequeno porte"
+    },
+    "industrial_motor_medium": {
+      "typical_power_range_W": { "min": 15000, "max": 50000 },
+      "typical_voltage_V": [380],
+      "phases": 3,
+      "power_factor": 0.88,
+      "efficiency": 0.93,
+      "load_type": "inductive",
+      "description": "Motor industrial médio porte"
+    },
+    "industrial_motor_large": {
+      "typical_power_range_W": { "min": 50000, "max": 250000 },
+      "typical_voltage_V": [380],
+      "phases": 3,
+      "power_factor": 0.90,
+      "efficiency": 0.95,
+      "load_type": "inductive",
+      "description": "Motor industrial grande porte"
+    },
+    "welding_machine": {
+      "typical_power_range_W": { "min": 3000, "max": 15000 },
+      "typical_voltage_V": [220, 380],
+      "phases": 1,
+      "power_factor": 0.60,
+      "efficiency": 0.75,
+      "load_type": "inductive",
+      "description": "Máquina de solda elétrica"
+    }
+  }
+}

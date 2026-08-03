@@ -1,0 +1,78 @@
+{
+  "standard_voltages": {
+    "phase_to_neutral": [127, 220],
+    "phase_to_phase": [220, 380],
+    "three_phase": [220, 380]
+  },
+  "frequency_Hz": 60,
+  "default_power_factor": 0.92,
+  "maximum_voltage_drop_percent": {
+    "lighting": 4.0,
+    "general_outlets_TUG": 5.0,
+    "specific_outlets_TUE": 7.0,
+    "industrial_loads": 7.0,
+    "subfeeders": 5.0,
+    "main_feeder": 4.0
+  },
+  "conductor_materials": {
+    "copper": {
+      "resistivity_ohm_mm2_per_m": 0.0172,
+      "temperature_coefficient_per_C": 0.00393,
+      "density_g_per_cm3": 8.89
+    },
+    "aluminum": {
+      "resistivity_ohm_mm2_per_m": 0.0282,
+      "temperature_coefficient_per_C": 0.00403,
+      "density_g_per_cm3": 2.70
+    }
+  },
+  "insulation_types": {
+    "PVC": {
+      "max_temperature_C": 70,
+      "short_circuit_max_temperature_C": 160,
+      "description": "Policloreto de vinila"
+    },
+    "EPR": {
+      "max_temperature_C": 90,
+      "short_circuit_max_temperature_C": 250,
+      "description": "Borracha etileno-propileno"
+    },
+    "XLPE": {
+      "max_temperature_C": 90,
+      "short_circuit_max_temperature_C": 250,
+      "description": "Polietileno reticulado"
+    }
+  },
+  "standard_cable_sections_mm2": [
+    1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300
+  ],
+  "installation_methods": {
+    "A1": "Condutores isolados em eletroduto embutido em parede termicamente isolante",
+    "A2": "Cabo multipolar em eletroduto embutido em parede termicamente isolante",
+    "B1": "Condutores isolados em eletroduto sobre parede de madeira ou alvenaria",
+    "B2": "Cabo multipolar em eletroduto sobre parede de madeira ou alvenaria",
+    "C": "Cabos unipolares ou multipolares sobre parede com afastamento",
+    "D": "Cabo multipolar em eletroduto enterrado",
+    "E": "Cabo multipolar ao ar livre",
+    "F": "Condutores isolados ao ar livre com afastamento",
+    "G": "Cabos unipolares espaçados ao ar livre"
+  },
+  "ambient_temperature_reference_C": 30,
+  "ground_temperature_reference_C": 20,
+  "circuit_types": {
+    "lighting": {
+      "minimum_section_mm2": 1.5,
+      "description": "Circuitos de iluminação"
+    },
+    "TUG": {
+      "minimum_section_mm2": 2.5,
+      "description": "Tomadas de uso geral"
+    },
+    "TUE": {
+      "minimum_section_mm2": 4.0,
+      "description": "Tomadas de uso específico"
+    }
+  },
+  "protection_device_types": ["MCB", "MCCB", "Fuse", "RCBO"],
+  "grounding_systems": ["TN-S", "TN-C", "TN-C-S", "TT", "IT"]
+}

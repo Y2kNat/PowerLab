@@ -1,0 +1,138 @@
+{
+  "description": "Fatores de correção para agrupamento de circuitos conforme NBR 5410",
+  "reference_table": "Tabela 42",
+  "factors": {
+    "1": {
+      "factor": 1.00,
+      "description": "1 circuito isolado ou 1 cabo multipolar"
+    },
+    "2": {
+      "factor": 0.80,
+      "description": "2 circuitos agrupados"
+    },
+    "3": {
+      "factor": 0.70,
+      "description": "3 circuitos agrupados"
+    },
+    "4": {
+      "factor": 0.65,
+      "description": "4 circuitos agrupados"
+    },
+    "5": {
+      "factor": 0.60,
+      "description": "5 circuitos agrupados"
+    },
+    "6": {
+      "factor": 0.57,
+      "description": "6 circuitos agrupados"
+    },
+    "7": {
+      "factor": 0.54,
+      "description": "7 circuitos agrupados"
+    },
+    "8": {
+      "factor": 0.52,
+      "description": "8 circuitos agrupados"
+    },
+    "9": {
+      "factor": 0.50,
+      "description": "9 circuitos agrupados"
+    },
+    "10": {
+      "factor": 0.48,
+      "description": "10 circuitos agrupados"
+    },
+    "11": {
+      "factor": 0.45,
+      "description": "11 circuitos agrupados"
+    },
+    "12": {
+      "factor": 0.43,
+      "description": "12 circuitos agrupados"
+    },
+    "13": {
+      "factor": 0.41,
+      "description": "13 circuitos agrupados"
+    },
+    "14": {
+      "factor": 0.39,
+      "description": "14 circuitos agrupados"
+    },
+    "15": {
+      "factor": 0.38,
+      "description": "15 circuitos agrupados"
+    },
+    "16": {
+      "factor": 0.37,
+      "description": "16 circuitos agrupados"
+    },
+    "17": {
+      "factor": 0.36,
+      "description": "17 circuitos agrupados"
+    },
+    "18": {
+      "factor": 0.35,
+      "description": "18 circuitos agrupados"
+    },
+    "19": {
+      "factor": 0.34,
+      "description": "19 circuitos agrupados"
+    },
+    "20": {
+      "factor": 0.33,
+      "description": "20 circuitos agrupados"
+    }
+  },
+  "installation_methods": {
+    "A1": {
+      "description": "Condutores isolados em eletroduto embutido em parede termicamente isolante",
+      "typical_grouping_scenarios": [1, 2, 3, 4, 5]
+    },
+    "A2": {
+      "description": "Cabo multipolar em eletroduto embutido em parede termicamente isolante",
+      "typical_grouping_scenarios": [1, 2, 3]
+    },
+    "B1": {
+      "description": "Condutores isolados em eletroduto sobre parede de madeira ou alvenaria",
+      "typical_grouping_scenarios": [1, 2, 3, 4, 5, 6, 7, 8]
+    },
+    "B2": {
+      "description": "Cabo multipolar em eletroduto sobre parede de madeira ou alvenaria",
+      "typical_grouping_scenarios": [1, 2, 3, 4, 5]
+    },
+    "C": {
+      "description": "Cabos unipolares ou multipolares sobre parede com afastamento",
+      "typical_grouping_scenarios": [1, 2, 3, 4, 5, 6]
+    },
+    "D": {
+      "description": "Cabo multipolar em eletroduto enterrado",
+      "typical_grouping_scenarios": [1, 2, 3, 4]
+    },
+    "E": {
+      "description": "Cabo multipolar ao ar livre",
+      "typical_grouping_scenarios": [1, 2, 3]
+    },
+    "F": {
+      "description": "Condutores isolados ao ar livre com afastamento",
+      "typical_grouping_scenarios": [1, 2, 3, 4]
+    },
+    "G": {
+      "description": "Cabos unipolares espaçados ao ar livre",
+      "typical_grouping_scenarios": [1, 2, 3]
+    }
+  },
+  "loaded_conductors": {
+    "2": {
+      "factor_multiplier": 1.00,
+      "description": "2 condutores carregados (fase e neutro)"
+    },
+    "3": {
+      "factor_multiplier": 1.00,
+      "description": "3 condutores carregados (três fases)"
+    },
+    "4": {
+      "factor_multiplier": 0.95,
+      "description": "4 condutores carregados (três fases e neutro com harmônicas)"
+    }
+  }
+}
