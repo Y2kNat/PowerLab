@@ -178,6 +178,68 @@
       position: relative;
       z-index: 1;
     }
+    
+    /* Stats Card Stack - apenas mobile */
+    @media (max-width: 768px) {
+      .stats-grid {
+        display: block !important;
+      }
+      .stats-card-stack {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        height: 180px;
+        margin: 0 auto;
+        touch-action: pan-y pinch-zoom;
+      }
+      .stats-card-item {
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.025);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: pan-y pinch-zoom;
+        will-change: transform, opacity;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+        padding: 1.5rem;
+        text-align: center;
+        overflow: hidden;
+      }
+      .stats-card-item .card-content {
+        transition: opacity 0.25s ease;
+      }
+      .stats-card-item.back-card .card-content {
+        opacity: 0;
+      }
+      .stats-card-item i {
+        font-size: 2rem;
+        opacity: 0.9;
+      }
+      .stats-card-item h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0;
+        color: white;
+      }
+      .stats-card-item p {
+        font-size: 0.85rem;
+        opacity: 0.8;
+        margin: 0;
+        color: white;
+      }
+    }
+    
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
@@ -220,21 +282,29 @@
       </section>
 
       <section class="stats-section">
-        <div class="container stats-grid">
-          <div class="stat-card">
-            <i class="fas fa-ruler-combined"></i>
-            <h3>Seções 1.5 a 35 mm²</h3>
-            <p>Cobre e Alumínio</p>
-          </div>
-          <div class="stat-card">
-            <i class="fas fa-bolt"></i>
-            <h3>Disjuntores 6A–100A</h3>
-            <p>Curva C padrão</p>
-          </div>
-          <div class="stat-card">
-            <i class="fas fa-temperature-high"></i>
-            <h3>Correção Térmica</h3>
-            <p>Agrupamento e temperatura</p>
+        <div class="container">
+          <div class="stats-card-stack" id="statsCardStack">
+            <div class="stats-card-item" data-index="0">
+              <div class="card-content">
+                <i class="fas fa-ruler-combined"></i>
+                <h3>Seções 1.5 a 35 mm²</h3>
+                <p>Cobre e Alumínio</p>
+              </div>
+            </div>
+            <div class="stats-card-item" data-index="1">
+              <div class="card-content">
+                <i class="fas fa-bolt"></i>
+                <h3>Disjuntores 6A–100A</h3>
+                <p>Curva C padrão</p>
+              </div>
+            </div>
+            <div class="stats-card-item" data-index="2">
+              <div class="card-content">
+                <i class="fas fa-temperature-high"></i>
+                <h3>Correção Térmica</h3>
+                <p>Agrupamento e temperatura</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -673,6 +743,195 @@
       }
 
       animate();
+
+      // Stats Card Stack Animation - apenas mobile
+      if (window.innerWidth <= 768) {
+        (function() {
+          var stackEl = document.getElementById('statsCardStack');
+          var cards = stackEl.querySelectorAll('.stats-card-item');
+          var len = cards.length;
+          var active = 0;
+          var dragState = {
+            isDragging: false,
+            hasMoved: false,
+            startX: 0,
+            startY: 0,
+            offsetX: 0,
+            pointerId: null,
+            locked: false
+          };
+
+          function wrap(n) {
+            return ((n % len) + len) % len;
+          }
+
+          function updatePositions(animate) {
+            cards.forEach(function(card) {
+              var i = parseInt(card.dataset.index);
+              var off = i - active;
+              
+              if (off > len / 2) off = off - len;
+              if (off < -len / 2) off = off + len;
+              
+              var absOff = Math.abs(off);
+              var zIndex = len - absOff;
+              var scale = 1 - absOff * 0.08;
+              var translateY = absOff * 16;
+              var opacity = absOff > 1 ? 0 : 1;
+              var translateX = 0;
+              
+              if (off === 0 && dragState.isDragging) {
+                translateX = dragState.offsetX;
+                opacity = 1;
+              }
+              
+              card.style.zIndex = zIndex;
+              card.style.opacity = opacity;
+              card.style.pointerEvents = absOff <= 1 ? 'auto' : 'none';
+              card.style.transition = (animate !== false) 
+                ? 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease' 
+                : 'none';
+              card.style.transform = 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) scale(' + scale + ')';
+              
+              if (off === 0) {
+                card.classList.remove('back-card');
+              } else {
+                card.classList.add('back-card');
+              }
+            });
+          }
+
+          function setActive(index) {
+            if (index === active) return;
+            active = wrap(index);
+            updatePositions(true);
+          }
+
+          function prev() {
+            setActive(active - 1);
+          }
+
+          function next() {
+            setActive(active + 1);
+          }
+
+          function onPointerDown(e) {
+            var card = e.currentTarget;
+            if (parseInt(card.dataset.index) !== active) return;
+            
+            dragState.isDragging = true;
+            dragState.hasMoved = false;
+            dragState.locked = false;
+            dragState.startX = e.clientX;
+            dragState.startY = e.clientY;
+            dragState.offsetX = 0;
+            dragState.pointerId = e.pointerId;
+            
+            card.setPointerCapture(e.pointerId);
+            card.addEventListener('pointermove', onPointerMove);
+            card.addEventListener('pointerup', onPointerUp);
+            card.addEventListener('pointercancel', onPointerUp);
+            card.addEventListener('lostpointercapture', onPointerUp);
+            
+            e.preventDefault();
+            e.stopPropagation();
+          }
+
+          function onPointerMove(e) {
+            if (!dragState.isDragging) return;
+            if (e.pointerId !== dragState.pointerId) return;
+            
+            var dx = e.clientX - dragState.startX;
+            var dy = e.clientY - dragState.startY;
+            
+            if (!dragState.locked) {
+              if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 6) {
+                dragState.locked = true;
+                dragState.isDragging = false;
+                return;
+              }
+            }
+            
+            if (dragState.locked) return;
+            
+            if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 0.5) {
+              dragState.hasMoved = true;
+            }
+            
+            if (dragState.hasMoved) {
+              dragState.offsetX = Math.max(-120, Math.min(120, dx));
+              updatePositions(false);
+              e.preventDefault();
+            }
+          }
+
+          function onPointerUp(e) {
+            if (e.pointerId !== dragState.pointerId && dragState.pointerId !== null) return;
+            
+            var card = e.currentTarget;
+            card.removeEventListener('pointermove', onPointerMove);
+            card.removeEventListener('pointerup', onPointerUp);
+            card.removeEventListener('pointercancel', onPointerUp);
+            card.removeEventListener('lostpointercapture', onPointerUp);
+            
+            if (!dragState.isDragging && !dragState.locked) {
+              dragState.isDragging = false;
+              dragState.offsetX = 0;
+              dragState.hasMoved = false;
+              dragState.pointerId = null;
+              dragState.locked = false;
+              return;
+            }
+            
+            dragState.isDragging = false;
+            
+            if (dragState.locked) {
+              updatePositions(true);
+            } else if (dragState.hasMoved) {
+              if (dragState.offsetX > 50) {
+                prev();
+              } else if (dragState.offsetX < -50) {
+                next();
+              } else {
+                updatePositions(true);
+              }
+            } else {
+              updatePositions(true);
+            }
+            
+            dragState.offsetX = 0;
+            dragState.hasMoved = false;
+            dragState.pointerId = null;
+            dragState.locked = false;
+          }
+
+          cards.forEach(function(card) {
+            card.addEventListener('pointerdown', onPointerDown);
+            card.addEventListener('dragstart', function(e) { e.preventDefault(); });
+          });
+
+          var touchStartX = 0;
+          var touchEndX = 0;
+          
+          stackEl.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+          }, { passive: true });
+          
+          stackEl.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            var diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+              if (diff > 0) {
+                next();
+              } else {
+                prev();
+              }
+            }
+          }, { passive: true });
+
+          updatePositions(false);
+        })();
+      }
     })();
   </script>
   <script src="script.js"></script>
