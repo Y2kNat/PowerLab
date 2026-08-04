@@ -614,16 +614,17 @@
       const noiseIntensity = 0.003;
       const particleSize = { min: 0.5, max: 2 };
 
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-
-      resizeCanvas();
+      const EXTRA_PX = 300;
+      
+      canvas.width = window.innerWidth + EXTRA_PX;
+      canvas.height = window.innerHeight + EXTRA_PX;
+      
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
 
       const particles = Array.from({ length: particleCount }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+        x: Math.random() * canvasWidth,
+        y: Math.random() * canvasHeight,
         size: Math.random() * (particleSize.max - particleSize.min) + particleSize.min,
         velocity: { x: 0, y: 0 },
         life: Math.random() * 100,
@@ -632,14 +633,14 @@
 
       function animate() {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         for (const particle of particles) {
           particle.life += 1;
           if (particle.life > particle.maxLife) {
             particle.life = 0;
-            particle.x = Math.random() * canvas.width;
-            particle.y = Math.random() * canvas.height;
+            particle.x = Math.random() * canvasWidth;
+            particle.y = Math.random() * canvasHeight;
           }
 
           const opacity = Math.sin((particle.life / particle.maxLife) * Math.PI) * 0.15;
@@ -657,10 +658,10 @@
           particle.x += particle.velocity.x;
           particle.y += particle.velocity.y;
 
-          if (particle.x < 0) particle.x = canvas.width;
-          if (particle.x > canvas.width) particle.x = 0;
-          if (particle.y < 0) particle.y = canvas.height;
-          if (particle.y > canvas.height) particle.y = 0;
+          if (particle.x < 0) particle.x = canvasWidth;
+          if (particle.x > canvasWidth) particle.x = 0;
+          if (particle.y < 0) particle.y = canvasHeight;
+          if (particle.y > canvasHeight) particle.y = 0;
 
           ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
           ctx.beginPath();
@@ -672,7 +673,6 @@
       }
 
       animate();
-      window.addEventListener('resize', resizeCanvas);
     })();
   </script>
   <script src="script.js"></script>
