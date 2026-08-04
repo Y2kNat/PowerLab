@@ -181,8 +181,16 @@
     
     /* Stats Card Stack - apenas mobile */
     @media (max-width: 768px) {
+      .stats-section .container {
+        padding: 0 1rem;
+      }
       .stats-grid {
         display: block !important;
+        grid-template-columns: none !important;
+        gap: 0 !important;
+      }
+      .stat-card {
+        display: none !important;
       }
       .stats-card-stack {
         position: relative;
@@ -209,15 +217,14 @@
         user-select: none;
         -webkit-user-select: none;
         touch-action: pan-y pinch-zoom;
-        will-change: transform, opacity;
+        will-change: transform;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
         padding: 1.5rem;
         text-align: center;
         overflow: hidden;
       }
       .stats-card-item .card-content {
-        transition: opacity 0.25s ease;
+        transition: opacity 0.2s ease;
       }
       .stats-card-item.back-card .card-content {
         opacity: 0;
@@ -283,6 +290,23 @@
 
       <section class="stats-section">
         <div class="container">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <i class="fas fa-ruler-combined"></i>
+              <h3>Seções 1.5 a 35 mm²</h3>
+              <p>Cobre e Alumínio</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-bolt"></i>
+              <h3>Disjuntores 6A–100A</h3>
+              <p>Curva C padrão</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-temperature-high"></i>
+              <h3>Correção Térmica</h3>
+              <p>Agrupamento e temperatura</p>
+            </div>
+          </div>
           <div class="stats-card-stack" id="statsCardStack">
             <div class="stats-card-item" data-index="0">
               <div class="card-content">
@@ -744,7 +768,7 @@
 
       animate();
 
-      // Stats Card Stack Animation - apenas mobile
+      // Stats Card Stack - apenas mobile, otimizado
       if (window.innerWidth <= 768) {
         (function() {
           var stackEl = document.getElementById('statsCardStack');
@@ -766,9 +790,10 @@
           }
 
           function updatePositions(animate) {
-            cards.forEach(function(card) {
-              var i = parseInt(card.dataset.index);
-              var off = i - active;
+            for (var i = 0; i < cards.length; i++) {
+              var card = cards[i];
+              var idx = parseInt(card.dataset.index);
+              var off = idx - active;
               
               if (off > len / 2) off = off - len;
               if (off < -len / 2) off = off + len;
@@ -788,9 +813,13 @@
               card.style.zIndex = zIndex;
               card.style.opacity = opacity;
               card.style.pointerEvents = absOff <= 1 ? 'auto' : 'none';
-              card.style.transition = (animate !== false) 
-                ? 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease' 
-                : 'none';
+              
+              if (animate !== false) {
+                card.style.transition = 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease';
+              } else {
+                card.style.transition = 'none';
+              }
+              
               card.style.transform = 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) scale(' + scale + ')';
               
               if (off === 0) {
@@ -798,7 +827,7 @@
               } else {
                 card.classList.add('back-card');
               }
-            });
+            }
           }
 
           function setActive(index) {
@@ -831,7 +860,6 @@
             card.addEventListener('pointermove', onPointerMove);
             card.addEventListener('pointerup', onPointerUp);
             card.addEventListener('pointercancel', onPointerUp);
-            card.addEventListener('lostpointercapture', onPointerUp);
             
             e.preventDefault();
             e.stopPropagation();
@@ -872,7 +900,6 @@
             card.removeEventListener('pointermove', onPointerMove);
             card.removeEventListener('pointerup', onPointerUp);
             card.removeEventListener('pointercancel', onPointerUp);
-            card.removeEventListener('lostpointercapture', onPointerUp);
             
             if (!dragState.isDragging && !dragState.locked) {
               dragState.isDragging = false;
@@ -888,9 +915,9 @@
             if (dragState.locked) {
               updatePositions(true);
             } else if (dragState.hasMoved) {
-              if (dragState.offsetX > 50) {
+              if (dragState.offsetX > 40) {
                 prev();
-              } else if (dragState.offsetX < -50) {
+              } else if (dragState.offsetX < -40) {
                 next();
               } else {
                 updatePositions(true);
@@ -905,29 +932,10 @@
             dragState.locked = false;
           }
 
-          cards.forEach(function(card) {
-            card.addEventListener('pointerdown', onPointerDown);
-            card.addEventListener('dragstart', function(e) { e.preventDefault(); });
-          });
-
-          var touchStartX = 0;
-          var touchEndX = 0;
-          
-          stackEl.addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-          }, { passive: true });
-          
-          stackEl.addEventListener('touchend', function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            var diff = touchStartX - touchEndX;
-            if (Math.abs(diff) > 50) {
-              if (diff > 0) {
-                next();
-              } else {
-                prev();
-              }
-            }
-          }, { passive: true });
+          for (var i = 0; i < cards.length; i++) {
+            cards[i].addEventListener('pointerdown', onPointerDown);
+            cards[i].addEventListener('dragstart', function(e) { e.preventDefault(); });
+          }
 
           updatePositions(false);
         })();
