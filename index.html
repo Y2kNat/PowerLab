@@ -195,7 +195,7 @@
       position: relative;
       z-index: 1;
     }
-    
+
     @media (max-width: 768px) {
       .stats-section .container {
         padding: 0 1rem;
@@ -262,7 +262,7 @@
         color: white;
       }
     }
-    
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
@@ -321,6 +321,29 @@
               <i class="fas fa-temperature-high"></i>
               <h3>Correção Térmica</h3>
               <p>Agrupamento e temperatura</p>
+            </div>
+          </div>
+          <div class="stats-card-stack" id="statsCardStack">
+            <div class="stats-card-item" data-index="0">
+              <div class="card-content">
+                <i class="fas fa-ruler-combined"></i>
+                <h3>Seções 1.5 a 35 mm²</h3>
+                <p>Cobre e Alumínio</p>
+              </div>
+            </div>
+            <div class="stats-card-item" data-index="1">
+              <div class="card-content">
+                <i class="fas fa-bolt"></i>
+                <h3>Disjuntores 6A–100A</h3>
+                <p>Curva C padrão</p>
+              </div>
+            </div>
+            <div class="stats-card-item" data-index="2">
+              <div class="card-content">
+                <i class="fas fa-temperature-high"></i>
+                <h3>Correção Térmica</h3>
+                <p>Agrupamento e temperatura</p>
+              </div>
             </div>
           </div>
         </div>
@@ -702,10 +725,10 @@
       const particleSize = { min: 0.5, max: 2 };
 
       const EXTRA_PX = 300;
-      
+
       canvas.width = window.innerWidth + EXTRA_PX;
       canvas.height = window.innerHeight + EXTRA_PX;
-      
+
       const canvasWidth = canvas.width;
       const canvasHeight = canvas.height;
 
@@ -787,34 +810,34 @@
               var card = cards[i];
               var idx = parseInt(card.dataset.index);
               var off = idx - active;
-              
+
               if (off > len / 2) off = off - len;
               if (off < -len / 2) off = off + len;
-              
+
               var absOff = Math.abs(off);
               var zIndex = len - absOff;
               var scale = 1 - absOff * 0.08;
               var translateY = absOff * 16;
               var opacity = absOff > 1 ? 0 : 1;
               var translateX = 0;
-              
+
               if (off === 0 && dragState.isDragging) {
                 translateX = dragState.offsetX;
                 opacity = 1;
               }
-              
+
               card.style.zIndex = zIndex;
               card.style.opacity = opacity;
               card.style.pointerEvents = absOff <= 1 ? 'auto' : 'none';
-              
+
               if (animate !== false) {
                 card.style.transition = 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease';
               } else {
                 card.style.transition = 'none';
               }
-              
+
               card.style.transform = 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) scale(' + scale + ')';
-              
+
               if (off === 0) {
                 card.classList.remove('back-card');
               } else {
@@ -840,7 +863,7 @@
           function onPointerDown(e) {
             var card = e.currentTarget;
             if (parseInt(card.dataset.index) !== active) return;
-            
+
             dragState.isDragging = true;
             dragState.hasMoved = false;
             dragState.locked = false;
@@ -848,12 +871,12 @@
             dragState.startY = e.clientY;
             dragState.offsetX = 0;
             dragState.pointerId = e.pointerId;
-            
+
             card.setPointerCapture(e.pointerId);
             card.addEventListener('pointermove', onPointerMove);
             card.addEventListener('pointerup', onPointerUp);
             card.addEventListener('pointercancel', onPointerUp);
-            
+
             e.preventDefault();
             e.stopPropagation();
           }
@@ -861,10 +884,10 @@
           function onPointerMove(e) {
             if (!dragState.isDragging) return;
             if (e.pointerId !== dragState.pointerId) return;
-            
+
             var dx = e.clientX - dragState.startX;
             var dy = e.clientY - dragState.startY;
-            
+
             if (!dragState.locked) {
               if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 6) {
                 dragState.locked = true;
@@ -872,13 +895,13 @@
                 return;
               }
             }
-            
+
             if (dragState.locked) return;
-            
+
             if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 0.5) {
               dragState.hasMoved = true;
             }
-            
+
             if (dragState.hasMoved) {
               dragState.offsetX = Math.max(-120, Math.min(120, dx));
               updatePositions(false);
@@ -888,12 +911,12 @@
 
           function onPointerUp(e) {
             if (e.pointerId !== dragState.pointerId && dragState.pointerId !== null) return;
-            
+
             var card = e.currentTarget;
             card.removeEventListener('pointermove', onPointerMove);
             card.removeEventListener('pointerup', onPointerUp);
             card.removeEventListener('pointercancel', onPointerUp);
-            
+
             if (!dragState.isDragging && !dragState.locked) {
               dragState.isDragging = false;
               dragState.offsetX = 0;
@@ -902,9 +925,9 @@
               dragState.locked = false;
               return;
             }
-            
+
             dragState.isDragging = false;
-            
+
             if (dragState.locked) {
               updatePositions(true);
             } else if (dragState.hasMoved) {
@@ -918,7 +941,7 @@
             } else {
               updatePositions(true);
             }
-            
+
             dragState.offsetX = 0;
             dragState.hasMoved = false;
             dragState.pointerId = null;
