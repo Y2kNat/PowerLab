@@ -775,6 +775,16 @@ main {
   margin: 0.1rem 0;
 }
 
+.stats-card-stack {
+  display: block;
+}
+
+@media (min-width: 769px) {
+  .stats-card-stack {
+    display: none !important;
+  }
+}
+
 @media (max-width: 768px) {
   .nav-links {
     position: fixed;
