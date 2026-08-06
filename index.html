@@ -201,11 +201,6 @@
         padding: 0 1rem;
       }
       .stats-grid {
-        display: block !important;
-        grid-template-columns: none !important;
-        gap: 0 !important;
-      }
-      .stat-card {
         display: none !important;
       }
       .stats-card-stack {
@@ -575,7 +570,7 @@
                 <tr><td>35</td><td>125</td><td>96</td></tr>
               </tbody>
             </table>
-          </div>
+          </div>    /* ========== ESTILOS DA STACK MOBILE (ANIMAÇÃO) ========== */
           <p class="table-note">Valores de referência para método B1, 30°C, até 3 condutores carregados.</p>
         </div>
       </section>
@@ -784,7 +779,6 @@
 
       animate();
 
-      // Stats Card Stack - apenas mobile, otimizado
       if (window.innerWidth <= 768) {
         (function() {
           var stackEl = document.getElementById('statsCardStack');
